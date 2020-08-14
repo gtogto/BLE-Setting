@@ -19,6 +19,10 @@ import os
 import sys
 import struct
 import bluetooth._bluetooth as bluez
+import datetime
+import time
+#now = datetime.datetime()
+now = time.localtime()
 
 LE_META_EVENT = 0x3e
 LE_PUBLIC_ADDRESS=0x00
@@ -126,6 +130,10 @@ def parse_events(sock, loop_count=100):
     done = False
     results = []
     myFullList = []
+
+    strAddress = "64:69:4e:82:6a:1a" #gto ble address
+    #strAddress1 = packed_bdaddr_to_string(pkt[report_pkt_offset + 3:report_pkt_offset + 9])
+
     for i in range(0, loop_count):
         pkt = sock.recv(255)
         ptype, event, plen = struct.unpack("BBB", pkt[:3])
@@ -149,32 +157,44 @@ def parse_events(sock, loop_count=100):
 		
 		    if (DEBUG == True):
 			print "-------------"
+			#print "%04d/%02d/%02d %02d:%02d:%02d" % (now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec)	
                     	#print "\tfullpacket: ", printpacket(pkt)
 		    	print "\tUDID: ", printpacket(pkt[report_pkt_offset -22: report_pkt_offset - 6])
 		    	print "\tMAJOR: ", printpacket(pkt[report_pkt_offset -6: report_pkt_offset - 4])
 		    	print "\tMINOR: ", printpacket(pkt[report_pkt_offset -4: report_pkt_offset - 2])
                     	print "\tMAC address: ", packed_bdaddr_to_string(pkt[report_pkt_offset + 3:report_pkt_offset + 9])
-		    	# commented out - don't know what this byte is.  It's NOT TXPower
+		    	# commented out - don't know what this byte is.  It's NOT TXPower			
                     	txpower, = struct.unpack("b", pkt[report_pkt_offset -2])
                     	print "\t(Unknown):", txpower
 	
                     	rssi, = struct.unpack("b", pkt[report_pkt_offset -1])
                     	print "\tRSSI:", rssi
+			#print "\tmac -> ", printpacket(pkt[report_pkt_offset -22: report_pkt_offset - 6])
+
 		    # build the return string
-                    Adstring = packed_bdaddr_to_string(pkt[report_pkt_offset + 3:report_pkt_offset + 9])
-		    Adstring += ","
-		    Adstring += returnstringpacket(pkt[report_pkt_offset -22: report_pkt_offset - 6]) 
-		    Adstring += ","
-		    Adstring += "%i" % returnnumberpacket(pkt[report_pkt_offset -6: report_pkt_offset - 4]) 
-		    Adstring += ","
-		    Adstring += "%i" % returnnumberpacket(pkt[report_pkt_offset -4: report_pkt_offset - 2]) 
-		    Adstring += ","
-		    Adstring += "%i" % struct.unpack("b", pkt[report_pkt_offset -2])
-		    Adstring += ","
-		    Adstring += "%i" % struct.unpack("b", pkt[report_pkt_offset -1])
+
+                    if strAddress == packed_bdaddr_to_string(pkt[report_pkt_offset + 3:report_pkt_offset + 9]):
+                        #print "\t ADDRESS is true "
+			#print "%04d/%02d/%02d %02d:%02d:%02d" % (now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec)
+                    	Adstring = packed_bdaddr_to_string(pkt[report_pkt_offset + 3:report_pkt_offset + 9])
+		    	Adstring += ","
+		    	Adstring += returnstringpacket(pkt[report_pkt_offset -22: report_pkt_offset - 6]) 
+		    	Adstring += ","
+		    	Adstring += "%i" % returnnumberpacket(pkt[report_pkt_offset -6: report_pkt_offset - 4]) 
+		    	Adstring += ","
+		    	Adstring += "%i" % returnnumberpacket(pkt[report_pkt_offset -4: report_pkt_offset - 2]) 
+		    	Adstring += ","
+		    	Adstring += "%i" % struct.unpack("b", pkt[report_pkt_offset -2])
+		    	Adstring += ","
+		    	Adstring += "%i" % struct.unpack("b", pkt[report_pkt_offset -1])
 
 		    #print "\tAdstring=", Adstring
- 		    myFullList.append(Adstring)
+ 		    	myFullList.append(Adstring)
+		    #print(type(packed_bdaddr_to_string(pkt[report_pkt_offset + 3:report_pkt_offset + 9]))
+		    #if strAddress == packed_bdaddr_to_string(pkt[report_pkt_offset + 3:report_pkt_offset + 9]):
+			#print "\t ADDRESS is true "
+
+
                 done = True
     sock.setsockopt( bluez.SOL_HCI, bluez.HCI_FILTER, old_filter )
     return myFullList
