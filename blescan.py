@@ -130,7 +130,7 @@ def parse_events(sock, loop_count=100):
     done = False
     results = []
     myFullList = []
-
+    # address registration
     strAddress = "64:69:4e:82:6a:1a" #gto ble address
     #strAddress1 = packed_bdaddr_to_string(pkt[report_pkt_offset + 3:report_pkt_offset + 9])
 
@@ -172,7 +172,7 @@ def parse_events(sock, loop_count=100):
 			#print "\tmac -> ", printpacket(pkt[report_pkt_offset -22: report_pkt_offset - 6])
 
 		    # build the return string
-
+		    # Filter only regestered addresses
                     if strAddress == packed_bdaddr_to_string(pkt[report_pkt_offset + 3:report_pkt_offset + 9]):
                         #print "\t ADDRESS is true "
 			#print "%04d/%02d/%02d %02d:%02d:%02d" % (now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec)
