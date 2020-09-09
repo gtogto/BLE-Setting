@@ -130,8 +130,10 @@ def parse_events(sock, loop_count=100):
     done = False
     results = []
     myFullList = []
+    myFullList1 = []	
     # address registration
-    strAddress = "64:69:4e:82:6a:1a" #gto ble address
+    strAddress = "64:69:4e:82:6a:1a" # VIZ-00 address
+    strAddress1 = "64:69:4e:82:67:47" # VIZ-01 address
     #strAddress1 = packed_bdaddr_to_string(pkt[report_pkt_offset + 3:report_pkt_offset + 9])
 
     for i in range(0, loop_count):
@@ -174,19 +176,34 @@ def parse_events(sock, loop_count=100):
 		    # build the return string
 		    # Filter only regestered addresses
                     if strAddress == packed_bdaddr_to_string(pkt[report_pkt_offset + 3:report_pkt_offset + 9]):
+                    #if strAddress1 == packed_bdaddr_to_string(pkt[report_pkt_offset + 3:report_pkt_offser + 9]):
                         #print "\t ADDRESS is true "
 			#print "%04d/%02d/%02d %02d:%02d:%02d" % (now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec)
                     	Adstring = packed_bdaddr_to_string(pkt[report_pkt_offset + 3:report_pkt_offset + 9])
-		    	Adstring += ","
-		    	Adstring += returnstringpacket(pkt[report_pkt_offset -22: report_pkt_offset - 6]) 
-		    	Adstring += ","
-		    	Adstring += "%i" % returnnumberpacket(pkt[report_pkt_offset -6: report_pkt_offset - 4]) 
-		    	Adstring += ","
-		    	Adstring += "%i" % returnnumberpacket(pkt[report_pkt_offset -4: report_pkt_offset - 2]) 
-		    	Adstring += ","
-		    	Adstring += "%i" % struct.unpack("b", pkt[report_pkt_offset -2])
-		    	Adstring += ","
-		    	Adstring += "%i" % struct.unpack("b", pkt[report_pkt_offset -1])
+                    	Adstring += ","
+                    	Adstring += returnstringpacket(pkt[report_pkt_offset -22: report_pkt_offset - 6]) 
+                    	Adstring += ","
+                    	Adstring += "%i" % returnnumberpacket(pkt[report_pkt_offset -6: report_pkt_offset - 4]) 
+                    	Adstring += ","
+                    	Adstring += "%i" % returnnumberpacket(pkt[report_pkt_offset -4: report_pkt_offset - 2]) 
+                    	Adstring += ","
+                    	Adstring += "%i" % struct.unpack("b", pkt[report_pkt_offset -2])
+                    	Adstring += ","
+                    	Adstring += "%i" % struct.unpack("b", pkt[report_pkt_offset -1])
+
+					#if strAddress1 == packed_bdaddr_to_string(pkt[report_pkt_offset + 3:report_pkt_offset + 9]):
+						
+						#Adstring = packed_bdaddr_to_string(pkt[report_pkt_offset + 3:report_pkt_offset +9])
+						#Adstring += ","
+						#Adstring += returnstringpacket(pkt[report_pkt_offset -22: report_pkt_offset -6])
+						#Adstring += ","
+						#Adstring += "%i" % returnnumberpacket(pkt[report_pkt_offset -6: report_pkt_offset -4])
+						#Adstring += ","
+						#Adstring += "%i" % returnnumberpacket(pkt[report_pkt_offset -4: report_pkt_offset -2])
+						#Adstring += ","
+						#Adstring += "%i" % struct.unpack("b", pkt[report_pkt_offset -2])
+						#Adstring += "," 
+						#Adstring += "%i" % struct.unpack("b", pkt[report_pkt_offset -1])
 
 		    #print "\tAdstring=", Adstring
  		    	myFullList.append(Adstring)
