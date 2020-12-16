@@ -45,4 +45,6 @@ sudo chgrp pi iBeacon-Scanner-
 ![image](https://user-images.githubusercontent.com/30851459/89870651-1f7b5880-dbf1-11ea-9ed5-c4febe282620.png)
 
 
-
+## 5. sent to Server (json command)
+- added shell script (objectCommand.sh)
+- chmod 744 objectCommand.sh
