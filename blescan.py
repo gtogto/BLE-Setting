@@ -20,6 +20,7 @@ import sys
 import struct
 import bluetooth._bluetooth as bluez
 import subprocess
+import time
 
 LE_META_EVENT = 0x3e
 LE_PUBLIC_ADDRESS=0x00
@@ -181,7 +182,10 @@ def parse_events(sock, loop_count=100):
 		    #print "\tAdstring=", Adstring
  		        myFullList.append(Adstring)
                         #subprocess.call('/home/pi/gto/iBeacon-Scanner-/./objectCommand', shell=True) 
-                        os.system("./objectCommand.sh")
+                        #now = time.localtime()
+                        #print "%04d/%02d/%02d %02d:%02d:%02d" % (now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec)
+                        #os.system("./objectCommand.sh")
+			#print("\n")
                 done = True
     sock.setsockopt( bluez.SOL_HCI, bluez.HCI_FILTER, old_filter )
     return myFullList
